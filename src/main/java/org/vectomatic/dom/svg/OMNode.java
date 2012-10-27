@@ -106,6 +106,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.HasEnabled;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.InsertPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -119,7 +120,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class OMNode extends ComplexPanel implements
   HasClickHandlers, HasDoubleClickHandlers, HasEnabled,
   HasAllDragAndDropHandlers, HasAllFocusHandlers, HasAllGestureHandlers,
-  HasAllKeyHandlers, HasAllMouseHandlers, HasAllTouchHandlers, HasWidgets {
+  HasAllKeyHandlers, HasAllMouseHandlers, HasAllTouchHandlers, HasWidgets, InsertPanel.ForIsWidget {
   
 	/**
 	 * The DOM native overlay type wrapped by this object
@@ -675,15 +676,6 @@ public class OMNode extends ComplexPanel implements
 	}
 
     /**
-     * Returns whether this node has any children.
-     * @return Returns <code>true</code> if this node has any children, 
-     *   <code>false</code> otherwise.
-     */
-  public boolean hasChildren() {
-    return getChildren().size() > 0;
-  }
-
-    /**
      * Returns a duplicate of this node, i.e., serves as a generic copy 
      * constructor for nodes. The duplicate node has no parent (
      * <code>parentNode</code> is <code>null</code>) and no user data. User 
@@ -747,6 +739,7 @@ public class OMNode extends ComplexPanel implements
 	public final void normalize() {
 		DOMHelper.normalize(ot);
 	}
+	
 	
 	@Override
 	public String toString() {
@@ -881,30 +874,81 @@ public class OMNode extends ComplexPanel implements
   }
 
   /**
-   * Isnert a child
+   * Insert a child
    */
   public void insertChild(IsWidget w, int beforeIndex) {
     insertChild(asWidgetOrNull(w), beforeIndex);
   }
 
   /**
-   * Inserts a child before the specified index.
-   * 
-   * @param w the widget to be inserted
-   * @param beforeIndex the index before which it will be inserted
-   * @throws IndexOutOfBoundsException if <code>beforeIndex</code> is out of
-   *           range
+   * Inserts a child
    */
   public void insertChild(Widget w, int beforeIndex) {
     insert(w, getElement(), beforeIndex, true);
   }
 
+  /**
+   * Inserts a child
+   */
+  @Override
+  public void insert(IsWidget w, int beforeIndex) {
+    insert(asWidgetOrNull(w), getElement(), beforeIndex, true);
+  }
+  
+  /**
+   * Inserts a child
+   */
+  @Override
+  public void insert(Widget w, int beforeIndex) {
+    insertChild(w, beforeIndex);
+  }
+  
+  /**
+   * Add a child
+   */
+  public void addChild(Widget w) {
+    add(w, getElement());
+  }
+  
+  /**
+   * Add a child
+   */
+  public void addChild(IsWidget w) {
+    add(asWidgetOrNull(w), getElement());
+  }
+  
+  /**
+   * Add a child
+   */
+  @Override
+  public void add(Widget w) {
+    add(w, getElement());
+  }
+  
+  /**
+   * Add a child
+   */
+  @Override
+  public void add(IsWidget w) {
+    add(asWidgetOrNull(w), getElement());
+  }
+  
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((ot == null) ? 0 : ot.hashCode());
     return result;
+  }
+  
+  /**
+   * Returns whether this node has any children.
+   * 
+   * @return Returns <code>true</code> if this node has any children,
+   *         <code>false</code> otherwise.
+   */
+  public boolean hasChildren() {
+    return getChildren().size() > 0;
   }
 
   @Override
