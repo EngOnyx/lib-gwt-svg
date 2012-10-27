@@ -866,8 +866,7 @@ public class OMNode extends ComplexPanel implements
   /**
    * Sets whether this widget is enabled.
    * 
-   * @param enabled <code>true</code> to enable the widget, <code>false</code>
-   *          to disable it
+   * @param enabled <code>true</code> to enable the widget, <code>false</code> to disable it
    */
   public void setEnabled(boolean enabled) {
     DOM.setElementPropertyBoolean(getElement(), "disabled", !enabled);
@@ -933,14 +932,6 @@ public class OMNode extends ComplexPanel implements
     add(asWidgetOrNull(w), getElement());
   }
   
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((ot == null) ? 0 : ot.hashCode());
-    return result;
-  }
-  
   /**
    * Returns whether this node has any children.
    * 
@@ -949,6 +940,14 @@ public class OMNode extends ComplexPanel implements
    */
   public boolean hasChildren() {
     return getChildren().size() > 0;
+  }
+  
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((ot == null) ? 0 : ot.hashCode());
+    return result;
   }
 
   @Override
