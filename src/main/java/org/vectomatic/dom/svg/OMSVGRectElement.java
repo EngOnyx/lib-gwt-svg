@@ -400,6 +400,7 @@ public class OMSVGRectElement extends OMSVGElement implements HasGraphicalHandle
   public final HandlerRegistration addFocusOutHandler(FocusOutHandler handler) {
     return addDomHandler(handler, FocusOutEvent.getType());
   }
+  
   // Helper methods
   /**
    * Constructor
@@ -412,17 +413,18 @@ public class OMSVGRectElement extends OMSVGElement implements HasGraphicalHandle
    */
   public OMSVGRectElement(float x, float y, float width, float height, float rx, float ry) {
     this();
-	getX().getBaseVal().setValue(x);
-	getY().getBaseVal().setValue(y);
-	getWidth().getBaseVal().setValue(width);
-	getHeight().getBaseVal().setValue(height);
-	if (rx != 0f) {
-		getRx().getBaseVal().setValue(rx);
-	}
-	if (ry != 0f) {
-		getRy().getBaseVal().setValue(ry);
-	}
+  	getX().getBaseVal().setValue(x);
+  	getY().getBaseVal().setValue(y);
+  	getWidth().getBaseVal().setValue(width);
+  	getHeight().getBaseVal().setValue(height);
+  	if (rx != 0f) {
+  		getRx().getBaseVal().setValue(rx);
+  	}
+  	if (ry != 0f) {
+  		getRy().getBaseVal().setValue(ry);
+  	}
   }
+  
   /**
    * Constructor
    * @param rect The SVG rect to use to initialize this rect.

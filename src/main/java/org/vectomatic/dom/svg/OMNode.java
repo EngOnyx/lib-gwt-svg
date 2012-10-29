@@ -637,11 +637,6 @@ public class OMNode extends ComplexPanel implements
      */
 	@Deprecated
 	public final OMNode removeChild(OMNode oldChild) {
-//	  try {
-//      getChildren().remove(oldChild);
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
 	  oldChild.removeFromParent();
 		return oldChild;
 	}
@@ -940,6 +935,16 @@ public class OMNode extends ComplexPanel implements
    */
   public boolean hasChildren() {
     return getChildren().size() > 0;
+  }
+  
+  @Override
+  public void addStyleName(String style) {
+    // TODO - can't add a class
+  }
+  
+  @Override
+  public void removeStyleName(String style) {
+    // TODO - can't add a class
   }
   
   @Override
