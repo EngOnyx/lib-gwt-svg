@@ -37,7 +37,6 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Node;
-import com.google.gwt.dom.client.Text;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -106,6 +105,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.HasEnabled;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.InsertPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -119,7 +119,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class OMNode extends ComplexPanel implements
   HasClickHandlers, HasDoubleClickHandlers, HasEnabled,
   HasAllDragAndDropHandlers, HasAllFocusHandlers, HasAllGestureHandlers,
-  HasAllKeyHandlers, HasAllMouseHandlers, HasAllTouchHandlers, HasWidgets {
+  HasAllKeyHandlers, HasAllMouseHandlers, HasAllTouchHandlers, HasWidgets, InsertPanel.ForIsWidget {
   
 	/**
 	 * The DOM native overlay type wrapped by this object
@@ -636,11 +636,6 @@ public class OMNode extends ComplexPanel implements
      */
 	@Deprecated
 	public final OMNode removeChild(OMNode oldChild) {
-//	  try {
-//      getChildren().remove(oldChild);
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
 	  oldChild.removeFromParent();
 		return oldChild;
 	}
@@ -673,15 +668,6 @@ public class OMNode extends ComplexPanel implements
 	  add(newChild, getElement());
 		return newChild;
 	}
-
-    /**
-     * Returns whether this node has any children.
-     * @return Returns <code>true</code> if this node has any children, 
-     *   <code>false</code> otherwise.
-     */
-  public boolean hasChildren() {
-    return getChildren().size() > 0;
-  }
 
     /**
      * Returns a duplicate of this node, i.e., serves as a generic copy 
@@ -747,6 +733,7 @@ public class OMNode extends ComplexPanel implements
 	public final void normalize() {
 		DOMHelper.normalize(ot);
 	}
+	
 	
 	@Override
 	public String toString() {
@@ -873,32 +860,92 @@ public class OMNode extends ComplexPanel implements
   /**
    * Sets whether this widget is enabled.
    * 
-   * @param enabled <code>true</code> to enable the widget, <code>false</code>
-   *          to disable it
+   * @param enabled <code>true</code> to enable the widget, <code>false</code> to disable it
    */
   public void setEnabled(boolean enabled) {
     DOM.setElementPropertyBoolean(getElement(), "disabled", !enabled);
   }
 
   /**
-   * Isnert a child
+   * Insert a child
    */
   public void insertChild(IsWidget w, int beforeIndex) {
     insertChild(asWidgetOrNull(w), beforeIndex);
   }
 
   /**
-   * Inserts a child before the specified index.
-   * 
-   * @param w the widget to be inserted
-   * @param beforeIndex the index before which it will be inserted
-   * @throws IndexOutOfBoundsException if <code>beforeIndex</code> is out of
-   *           range
+   * Inserts a child
    */
   public void insertChild(Widget w, int beforeIndex) {
     insert(w, getElement(), beforeIndex, true);
   }
 
+  /**
+   * Inserts a child
+   */
+  @Override
+  public void insert(IsWidget w, int beforeIndex) {
+    insert(asWidgetOrNull(w), getElement(), beforeIndex, true);
+  }
+  
+  /**
+   * Inserts a child
+   */
+  @Override
+  public void insert(Widget w, int beforeIndex) {
+    insertChild(w, beforeIndex);
+  }
+  
+  /**
+   * Add a child
+   */
+  public void addChild(Widget w) {
+    add(w, getElement());
+  }
+  
+  /**
+   * Add a child
+   */
+  public void addChild(IsWidget w) {
+    add(asWidgetOrNull(w), getElement());
+  }
+  
+  /**
+   * Add a child
+   */
+  @Override
+  public void add(Widget w) {
+    add(w, getElement());
+  }
+  
+  /**
+   * Add a child
+   */
+  @Override
+  public void add(IsWidget w) {
+    add(asWidgetOrNull(w), getElement());
+  }
+  
+  /**
+   * Returns whether this node has any children.
+   * 
+   * @return Returns <code>true</code> if this node has any children,
+   *         <code>false</code> otherwise.
+   */
+  public boolean hasChildren() {
+    return getChildren().size() > 0;
+  }
+  
+  @Override
+  public void addStyleName(String style) {
+    // TODO - can't add a class
+  }
+  
+  @Override
+  public void removeStyleName(String style) {
+    // TODO - can't add a class
+  }
+  
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -922,6 +969,32 @@ public class OMNode extends ComplexPanel implements
     } else if (!ot.equals(other.ot))
       return false;
     return true;
+  }
+
+  /**
+   * Put this svg widget to the back of the order. 
+   */
+  public void arrangeToFront() {
+    OMNode parent = (OMNode) this.getParent();
+    parent.add(this);
+  }
+
+  /**
+   * Put this svg widget on top of the order.
+   */
+  public void arrangeToBack() {
+    OMNode parent = (OMNode) this.getParent();
+    parent.insert(this, 0);
+  }
+  
+  @Override
+  public int getOffsetHeight() {
+    return DOM.getElementPropertyInt(getElement(), "height");
+  }
+  
+  @Override
+  public int getOffsetWidth() {
+    return DOM.getElementPropertyInt(getElement(), "width");
   }
   
 }
