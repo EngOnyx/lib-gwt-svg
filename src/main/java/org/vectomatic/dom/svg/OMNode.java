@@ -37,7 +37,6 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Node;
-import com.google.gwt.dom.client.Text;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -970,6 +969,32 @@ public class OMNode extends ComplexPanel implements
     } else if (!ot.equals(other.ot))
       return false;
     return true;
+  }
+
+  /**
+   * Put this svg widget to the back of the order. 
+   */
+  public void arrangeToFront() {
+    OMNode parent = (OMNode) this.getParent();
+    parent.add(this);
+  }
+
+  /**
+   * Put this svg widget on top of the order.
+   */
+  public void arrangeToBack() {
+    OMNode parent = (OMNode) this.getParent();
+    parent.insert(this, 0);
+  }
+  
+  @Override
+  public int getOffsetHeight() {
+    return DOM.getElementPropertyInt(getElement(), "height");
+  }
+  
+  @Override
+  public int getOffsetWidth() {
+    return DOM.getElementPropertyInt(getElement(), "width");
   }
   
 }
