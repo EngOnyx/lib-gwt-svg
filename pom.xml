@@ -83,11 +83,11 @@
     <!-- Run by using mvn clean install deploy -->
     <distributionManagement>
         <repository>
-            <id>engonyx-releases</id>
+            <id>nexus</id>
             <url>http://development.engonyx.com/nexus/content/repositories/engonyx-releases</url>
         </repository>
         <snapshotRepository>
-            <id>engonyx-snapshots</id>
+            <id>nexus</id>
             <url>http://development.engonyx.com/nexus/content/repositories/engonyx-snapshots</url>
         </snapshotRepository>
     </distributionManagement> 
